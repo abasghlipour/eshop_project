@@ -30,6 +30,6 @@ class BucketHome(View):
 
 class DeleteBucketObject(View):
     def get(self, request, key):
-        delete_object_task.delay(key)
+        delete_object_task(key)
         messages.success(request, 'object is delete', 'success')
         return redirect('home:bucket')
