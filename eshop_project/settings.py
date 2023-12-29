@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3pmha18u*m0rlrq-n@we(s7gez2ag1*ozlf0_3u_l9@cj5+^en'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -139,4 +139,4 @@ AWS_S3_SECRET_ACCESS_KEY = 'dd81d5b8c1ee63275399f76496ee1bb9b2d42afec95518279b4e
 AWS_STORAGE_BUCKET_NAME = 'abasgh-sho'
 AWS_SERVICE_NAME = 's3'
 AWS_S3_FILE_OVERWRITE = False
-AWS_LOCAL_STORAGE=f'{BASE_DIR}/aws/'
+AWS_LOCAL_STORAGE = f'{BASE_DIR}/aws/'
