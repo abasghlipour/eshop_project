@@ -1,10 +1,13 @@
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import UserRegistrationForm, VerifyCodeForm
+from .forms import UserRegistrationForm, VerifyCodeForm, LoginForm
 import random
 from utils import send_otp_code
 from .models import OtpCode, User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class UserRegisterView(View):
@@ -55,3 +58,36 @@ class UserRegisterVerifyCodeView(View):
             messages.error(request, 'this code is wrong', 'danger')
             return redirect('accounts:verify_code')
         return redirect('home:home')
+
+
+class LogoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        return redirect('home:home')
+
+
+class UserLoginView(View):
+    template_name = 'accounts/login.html'
+    form_class = LoginForm
+
+    def setup(self, request, *args, **kwargs):
+        self.next = request.GET.get('next')
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, phone_number=cd['phone_number'], password=cd['password'])
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'you logged in successfully', 'success')
+                if self.next:
+                    return redirect(self.next)
+                return redirect('home:home')
+            messages.error(request, 'username or password is wrong', 'warning')
+        return render(request, self.template_name, {'form': form})

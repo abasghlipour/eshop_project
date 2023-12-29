@@ -1,7 +1,7 @@
 from django import forms
 from .models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 
 
 class UserCreationForm(forms.ModelForm):
@@ -71,3 +71,8 @@ class UserRegistrationForm(forms.ModelForm):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
+
+
+class LoginForm(forms.Form):
+    phone_number = forms.CharField(label='شماره تلفن')
+    password = forms.CharField(label='رمز عبور')

@@ -3,6 +3,7 @@ from django.views import View
 from bucket import bucket
 from .models import Product
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -14,7 +15,7 @@ class HomeView(View):
         return render(request, 'home/home.html', {'products': products})
 
 
-class ProductDetailView(View):
+class ProductDetailView(LoginRequiredMixin, View):
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
         return render(request, 'home/product_detail.html', {'product': product})
@@ -32,4 +33,11 @@ class DeleteBucketObject(View):
     def get(self, request, key):
         bucket.delete_object(key)
         messages.success(request, 'object is delete', 'success')
+        return redirect('home:bucket')
+
+
+class DownloadBucketObject(View):
+    def get(self, request, key):
+        bucket.download_object(key)
+        messages.success(request, 'object is download', 'success')
         return redirect('home:bucket')
