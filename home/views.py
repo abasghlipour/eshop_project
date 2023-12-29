@@ -4,6 +4,8 @@ from bucket import bucket
 from .models import Product
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from utils import IsAdminUserMixin
 
 
 # Create your views here.
@@ -21,7 +23,7 @@ class ProductDetailView(LoginRequiredMixin, View):
         return render(request, 'home/product_detail.html', {'product': product})
 
 
-class BucketHome(View):
+class BucketHome(IsAdminUserMixin, View):
     template_name = 'home/bucket.html'
 
     def get(self, request):
@@ -29,14 +31,14 @@ class BucketHome(View):
         return render(request, self.template_name, {'objects': objects})
 
 
-class DeleteBucketObject(View):
+class DeleteBucketObject(IsAdminUserMixin, View):
     def get(self, request, key):
         bucket.delete_object(key)
         messages.success(request, 'object is delete', 'success')
         return redirect('home:bucket')
 
 
-class DownloadBucketObject(View):
+class DownloadBucketObject(IsAdminUserMixin, View):
     def get(self, request, key):
         bucket.download_object(key)
         messages.success(request, 'object is download', 'success')

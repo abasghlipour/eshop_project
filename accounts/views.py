@@ -1,4 +1,3 @@
-from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
 from .forms import UserRegistrationForm, VerifyCodeForm, LoginForm
@@ -63,6 +62,7 @@ class UserRegisterVerifyCodeView(View):
 class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'logged out ', 'success')
         return redirect('home:home')
 
 

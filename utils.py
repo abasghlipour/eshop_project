@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from ippanel import Client
 
 
@@ -12,3 +13,8 @@ def send_otp_code(phone_number, code, full_name):
         message=message,  # message
         summary="description"  # is logged
     )
+
+
+class IsAdminUserMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_admin
