@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'home',
-    'storages'
+    'storages',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -79,9 +80,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
         'USER': 'root',
-        'PASSWORD': 'j8v9ZWLZoABtHRYhkvmnucNr',
-        'HOST': 'damavand.liara.cloud',
-        'PORT': '30821'
+        'PASSWORD': 'IIcWBVK4zkDOsNDRayVGOyoc',
+        'HOST': 'sahand.liara.cloud',
+        'PORT': '30573'
     }
 }
 
